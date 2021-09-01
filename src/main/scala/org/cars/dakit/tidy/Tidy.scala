@@ -1,11 +1,9 @@
 package org.cars.dakit.tidy
 
 import org.apache.spark.sql.functions.{col, _}
-import org.apache.spark.sql.types.{StructField, StructType}
-import org.apache.spark.sql.{Column, DataFrame}
-
+import org.apache.spark.sql.types.{DataType, StructField, StructType}
+import org.apache.spark.sql.{Column, DataFrame, Dataset}
 import org.cars.dakit.sql.DataTypeTool._
-
 import org.cars.dakit.basic.BasicToolSet.allIn
 
 //import com.ttrms.util.dftools.tidy.Tidy._
@@ -117,7 +115,7 @@ object Tidy {
   }
 
 
-  def separate(data: DataFrame, remove: Boolean, recursive: Boolean): DataFrame = {
+  def separate(data: Dataset[_], remove: Boolean, recursive: Boolean): DataFrame = {
     val cond = data.columns.filter(colCheck[StructType](data, _))
     separate(data, cond, remove, recursive)
   }
@@ -149,7 +147,7 @@ object Tidy {
   }
 
 
-  def separate(data: DataFrame, cols: Seq[String], remove: Boolean, recursive: Boolean): DataFrame = {
+  def separate(data: Dataset[_], cols: Seq[String], remove: Boolean, recursive: Boolean): DataFrame = {
     val cond = cols.filter(!colCheck[StructType](data, _))
     //todo  添加 要求cols 必须存在data 中的断言
 

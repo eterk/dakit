@@ -1,6 +1,6 @@
 package org.cars.dakit.sql
 
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.{DataFrame, Dataset}
 import org.apache.spark.sql.types.{DataType, StructType}
 
 import scala.reflect.{ClassTag, classTag}
@@ -14,7 +14,7 @@ object DataTypeTool {
    * }}}
    *
    */
-  def colCheck[T: ClassTag](data: DataFrame, colName: String): Boolean = {
+  def colCheck[T: ClassTag](data: Dataset[_], colName: String): Boolean = {
     try {
       classTag[T].runtimeClass.isInstance(Option(data.schema(colName)).get.dataType)
     } catch {

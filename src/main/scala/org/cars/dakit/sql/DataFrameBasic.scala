@@ -70,25 +70,7 @@ object DataFrameBasic {
    * @tparam T 需要转换的类型
    */
   def to[T <: Product : TypeTag](data: Dataset[_]): Dataset[T] = {
-    val encoders = Encoders.product[T]
-    val target = encoders.schema
-
-    // 选择目标列
-    val df = select(data, target.names.toSeq, true)
-
-    val diffType = DataTypeTool.getDiffDataType(df.schema, target).
-      filter(p => p._2._2.typeName != p._2._2.typeName)
-
-    val result = if (diffType.isEmpty) {
-      df
-    } else {
-      val colMap = diffType.map(p => (p._1, col(p._1).cast(p._2._1)))
-      diffType.foreach(f =>
-        logger.warn("col " + f._1 + " expect " + f._2._1.simpleString + " get " + f._2._2.simpleString + "  cast automatic")
-      )
-      withColumns(df, colMap)
-    }
-    result.as[T](encoders)
+   SmartConverter.productConvert[T](data)
   }
 
 
