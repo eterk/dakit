@@ -1,7 +1,7 @@
 package org.apache.spark.sql
 
 import org.apache.spark.sql.catalyst.util.StringUtils.StringConcat
-import org.apache.spark.sql.types.{ArrayType, MapType, StructType}
+import org.apache.spark.sql.types.{AbstractDataType, ArrayType, MapType, StructType}
 
 /**
  * 为了访问部分 sql 包可见的方法
